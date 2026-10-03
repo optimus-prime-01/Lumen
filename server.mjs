@@ -6,12 +6,13 @@ const port = Number(process.env.PORT || 3000);
 const server = createServer(async (request, response) => {
   try {
     const url = new URL(request.url || "/", `http://${request.headers.host || "localhost"}`);
+    const pathname = url.pathname.replace(/\.js$/, "").replace(/\/+$/, "") || "/";
 
-    if (request.method === "GET" && url.pathname === "/api/health") {
+    if (request.method === "GET" && pathname === "/api/health") {
       return handleHealth(request, response);
     }
 
-    if (request.method === "POST" && url.pathname === "/api/chat") {
+    if (request.method === "POST" && pathname === "/api/chat") {
       return handleChat(request, response);
     }
 
