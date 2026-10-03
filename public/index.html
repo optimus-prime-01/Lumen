@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f5ef" />
+    <meta name="description" content="A private, storage-free AI chat interface." />
+    <title>Lumen — AI chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="brand-row">
+          <a class="brand" href="#" aria-label="Lumen home">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 32 32" fill="none">
+                <path d="M16 3.5c1.65 5.65 2.85 6.85 8.5 8.5-5.65 1.65-6.85 2.85-8.5 8.5-1.65-5.65-2.85-6.85-8.5-8.5 5.65-1.65 6.85-2.85 8.5-8.5Z" fill="currentColor"/>
+                <path d="M24.1 19c.76 2.6 1.3 3.14 3.9 3.9-2.6.76-3.14 1.3-3.9 3.9-.76-2.6-1.3-3.14-3.9-3.9 2.6-.76 3.14-1.3 3.9-3.9Z" fill="currentColor" opacity=".65"/>
+              </svg>
+            </span>
+            <span>Lumen</span>
+          </a>
+          <button class="icon-button sidebar-close" id="sidebar-close" aria-label="Close sidebar">
+            <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+          </button>
+        </div>
+
+        <button class="new-chat-button" id="new-chat">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          <span>New chat</span>
+          <kbd>⌘ K</kbd>
+        </button>
+
+        <div class="sidebar-section">
+          <p class="sidebar-label">Chats</p>
+          <button class="chat-row active" id="current-chat">
+            <svg viewBox="0 0 24 24"><path d="M7 8h10M7 12h7m7 0a8 8 0 1 1-3.4-6.55A8 8 0 0 1 20 12Z"/></svg>
+            <span id="chat-title">New conversation</span>
+          </button>
+        </div>
+
+        <div class="sidebar-bottom">
+          <div class="privacy-card">
+            <div class="privacy-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.55 2.98 8.8 7 10 4.02-1.2 7-5.45 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+            </div>
+            <div>
+              <strong>Private session</strong>
+              <span>Nothing is saved locally</span>
+            </div>
+          </div>
+          <div class="provider-pill">
+            <span class="status-dot" id="status-dot"></span>
+            <span id="provider-label">Checking provider…</span>
+          </div>
+        </div>
+      </aside>
+
+      <div class="sidebar-scrim" id="sidebar-scrim"></div>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <button class="icon-button menu-button" id="menu-button" aria-label="Open sidebar">
+            <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+          <div class="mobile-brand">Lumen</div>
+          <div class="model-controls" aria-label="AI provider and model">
+            <label class="select-shell provider-select-shell">
+              <span class="provider-orb" id="provider-orb" aria-hidden="true"></span>
+              <select id="provider-select" aria-label="AI provider" disabled>
+                <option>Loading…</option>
+              </select>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+            </label>
+            <label class="select-shell model-select-shell">
+              <select id="model-select" aria-label="AI model" disabled>
+                <option>Loading models…</option>
+              </select>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+            </label>
+            <span class="key-status" id="key-status">Checking key…</span>
+          </div>
+          <div class="topbar-spacer"></div>
+          <button class="theme-toggle" id="theme-toggle" aria-label="Switch to dark mode" title="Switch theme">
+            <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.3A8.6 8.6 0 0 1 8.7 3.5a8.7 8.7 0 1 0 11.8 11.8Z"/></svg>
+          </button>
+          <button class="memory-badge" title="Chats disappear when this page is refreshed">
+            <svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.55 2.98 8.8 7 10 4.02-1.2 7-5.45 7-10V6l-7-3Z"/></svg>
+            <span>Incognito</span>
+          </button>
+        </header>
+
+        <section class="chat-scroll" id="chat-scroll">
+          <div class="welcome" id="welcome">
+            <div class="welcome-mark" aria-hidden="true">
+              <svg viewBox="0 0 40 40" fill="none">
+                <path d="M20 3.5c2.15 7.35 3.65 8.85 11 11-7.35 2.15-8.85 3.65-11 11-2.15-7.35-3.65-8.85-11-11 7.35-2.15 8.85-3.65 11-11Z" fill="currentColor"/>
+                <path d="M29.8 24.2c.98 3.35 1.65 4.02 5 5-3.35.98-4.02 1.65-5 5-.98-3.35-1.65-4.02-5-5 3.35-.98 4.02-1.65 5-5Z" fill="currentColor" opacity=".6"/>
+              </svg>
+            </div>
+            <h1>How can I help you today?</h1>
+            <p>Ask anything, work through an idea, or share an image.</p>
+            <div class="suggestion-grid">
+              <button class="suggestion" data-prompt="Help me brainstorm a thoughtful name for a new creative project.">
+                <span class="suggestion-icon coral">
+                  <svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M8.5 14.5A6 6 0 1 1 15.5 14c-.9.7-1.5 1.4-1.5 2H10c0-.6-.6-1.2-1.5-1.5Z"/></svg>
+                </span>
+                <span><strong>Brainstorm ideas</strong><small>Find a fresh direction</small></span>
+              </button>
+              <button class="suggestion" data-prompt="Explain a complex topic to me in simple, practical terms.">
+                <span class="suggestion-icon blue">
+                  <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v16H6.5A2.5 2.5 0 0 0 4 21.5v-16ZM20 5.5A2.5 2.5 0 0 0 17.5 3H13v16h4.5a2.5 2.5 0 0 1 2.5 2.5v-16Z"/></svg>
+                </span>
+                <span><strong>Learn something</strong><small>Make a topic click</small></span>
+              </button>
+              <button class="suggestion" data-prompt="Help me write a clear and friendly message for a professional situation.">
+                <span class="suggestion-icon green">
+                  <svg viewBox="0 0 24 24"><path d="m14 5 5 5M4 20l4.5-1 10-10a1.4 1.4 0 0 0 0-2l-1.5-1.5a1.4 1.4 0 0 0-2 0l-10 10L4 20Z"/></svg>
+                </span>
+                <span><strong>Write together</strong><small>Draft and refine text</small></span>
+              </button>
+              <button class="suggestion" data-prompt="I want to share an image and understand what is in it.">
+                <span class="suggestion-icon gold">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m5 18 5-5 3.5 3.5 2-2L20 19"/></svg>
+                </span>
+                <span><strong>Explore an image</strong><small>Upload and ask questions</small></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="messages" id="messages" aria-live="polite"></div>
+        </section>
+
+        <section class="composer-wrap">
+          <div class="drop-overlay" id="drop-overlay">
+            <div>
+              <svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/></svg>
+              <span>Drop images here</span>
+            </div>
+          </div>
+          <form class="composer" id="composer">
+            <div class="image-tray" id="image-tray"></div>
+            <textarea id="prompt" rows="1" maxlength="30000" placeholder="Message Lumen…" aria-label="Message Lumen"></textarea>
+            <div class="composer-actions">
+              <div class="composer-left">
+                <button type="button" class="round-button" id="attach-button" aria-label="Attach images" title="Attach PNG or JPEG">
+                  <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+                <span class="image-hint">Add images</span>
+                <input type="file" id="file-input" accept="image/png,image/jpeg" multiple hidden />
+              </div>
+              <button type="submit" class="send-button" id="send-button" aria-label="Send message" disabled>
+                <svg class="send-icon" viewBox="0 0 24 24"><path d="M12 19V5m0 0L6 11m6-6 6 6"/></svg>
+                <svg class="stop-icon" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1"/></svg>
+              </button>
+            </div>
+          </form>
+          <p class="disclaimer">Lumen can make mistakes. Check important information.</p>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
