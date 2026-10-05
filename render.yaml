@@ -6,8 +6,8 @@ services:
     startCommand: npm start
     envVars:
       - key: AI_PROVIDER
-        value: gemini
-      - key: GEMINI_API_KEY
+        value: anthropic
+      - key: ANTHROPIC_API_KEY
         sync: false
-      - key: GEMINI_MODEL
-        value: gemini-3.8-flash
+      - key: ANTHROPIC_MODEL
+        value: claude-opus-5
